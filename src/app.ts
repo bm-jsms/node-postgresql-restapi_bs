@@ -1,4 +1,11 @@
-console.log('Hello world, PostgreSQL');
+import express from 'express';
+import router from './routes/users.routes.js';
+import { PORT } from './config.js';
 
-const name: string = 'John Doe';
-console.log(`Hello ${name}`);
+const app = express();
+
+app.use(router);
+
+app.listen(PORT, () => {
+	console.log('Server started on port 3000');
+});
