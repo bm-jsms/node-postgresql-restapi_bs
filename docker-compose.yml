@@ -1,0 +1,35 @@
+services:
+  myDB:
+    image: postgres:17.5
+    container_name: SQL
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgAdmin:
+    image: dpage/pgadmin4:8.14.0
+    container_name: pgAdmin
+    restart: always
+    depends_on:
+      - SQL
+    ports:
+      - '8080:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_NAME: admin
+      PGADMIN_DEFAULT_PASSWORD: 1234
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./certs/server.cert:/certs/server.cert:ro
+      - ./certs/server.key:/certs/server.key:ro
+      - ./servers/servers.json:/pgadmin4/servers.json:ro
+
+volumes:
+  postgres_data:
+  pgadmin_data:
